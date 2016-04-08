@@ -45,11 +45,46 @@ import random
 
 from . import gen_xmessagecode
 
+from .consts import (
+    IOS_HEADER,
+    IOS_HEADER_AUTHKEY,
+    IOS_HEADER_WEBVIEW,
+    AUTHORIZE_BASE,
+    AUTHORIZE_BASE_AUTHKEY,
+    AUTHORIZE_BASE_WEBVIEW,
+    SPECIAL_ROUTER_MAP,
+    MAIN_ROUTER_MAP,
+)
+
 
 logger = logging.getLogger(__name__)
 
 
-class LLSIFClient:
+class NewLLSIFClient(object):
+
+    def __init__(self):
+        self.nouce = 1
+        self.wv_nouce = 1
+        self.token = None
+        self.login_key = None
+
+    def login(self, login_key, login_password):
+        pass
+
+    def register(self):
+        pass
+
+    def get_handover_code(self):
+        pass
+
+    def use_handover_code(self, handover_code):
+        pass
+
+    def start_live(self, live_difficulty_id, unit_deck_id=None, friend_user_id=None):
+        pass
+
+
+class LLSIFClient(object):
     """Love Live School Idol Festival client class."""
 
     # Constants

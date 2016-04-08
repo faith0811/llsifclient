@@ -2,15 +2,7 @@
 
 from collections import OrderedDict
 
-
-class LLSIFAPI(object):
-    def __init__(self, module, action):
-        self.module = module
-        self.action = action
-
-    @property
-    def uri(self):
-        return '/main.php/{}/{}'.format(self.module, self.action)
+from .api import LLSIFAPI
 
 
 IOS_HEADER = OrderedDict([
@@ -98,38 +90,86 @@ AUTHORIZE_BASE_AUTHKEY = OrderedDict([
 ])
 
 MAIN_ROUTER_MAP = {
-    'auth_key': LLSIFAPI('login', 'authkey'),
-    'login': LLSIFAPI('login', 'login'),
     'user_info': LLSIFAPI('user', 'userInfo'),
-    'personal_notice': LLSIFAPI('personalnotice', 'get'),
+    'user_items': LLSIFAPI('user', 'showAllItem'),
+
+    'auth_key': LLSIFAPI('login', 'authkey'),
+    'login': LLSIFAPI('login', 'login', requires=['login_key', 'login_password'], excludes=['module', 'action', 'timeStamp', 'commandNum']),
+    'top_info': LLSIFAPI('login', 'topInfo'),
+    'top_info_once': LLSIFAPI('login', 'topInfoOnce'),
+
     'tos': LLSIFAPI('tos', 'tosCheck'),
     'agree_tos': LLSIFAPI('tos', 'tosAgree'),
-    'is_connected_llaccount': LLSIFAPI('platformAccount', 'isConnectedLlAccount'),
-    'lbonus': LLSIFAPI('lbouns', 'execute'),
+
     'handover_start': LLSIFAPI('handover', 'start'),
     'handover_exec': LLSIFAPI('handover', 'exec'),
+
     'reward_list': LLSIFAPI('reward', 'rewardList'),
+    'reward_open': LLSIFAPI('reward', 'open'),
+    'reward_openall': LLSIFAPI('reward', 'openAll'),
+
     'event_player_rank': LLSIFAPI('ranking', 'eventPlayer'),
     'general_player_rank': LLSIFAPI('ranking', 'player'),
+
     'friend_variety': LLSIFAPI('notice', 'noticeFriendVariety'),
     'friend_greetings': LLSIFAPI('notice', 'noticeFriendGreeting'),
     'friend_greetings_from_user': LLSIFAPI('notice', 'noticeUserGreetingHistory'),
+    'notice_marquee': LLSIFAPI('notice', 'noticeMarquee'),
+
     'secretbox_list': LLSIFAPI('secretbox', 'all'),
     'secretbox_pull': LLSIFAPI('secretbox', 'pon'),
+
     'unit_merge': LLSIFAPI('unit', 'merge'),
     'unit_sale': LLSIFAPI('unit', 'sale'),
     'unit_rankup': LLSIFAPI('unit', 'rankUp'),
     'unit_favorite': LLSIFAPI('unit', 'favorite'),
+    'unit_all': LLSIFAPI('unit', 'unitAll'),
+    'unit_deck': LLSIFAPI('unit', 'deckInfo'),
+
     'product_list': LLSIFAPI('payment', 'productList'),
-    'background_list': LLSIFAPI('background', 'set'),
-    'award_set': LLSIFAPI('award', 'set'),
-    'unaccomplished_achievement': LLSIFAPI('achievement', 'unaccomplishList'),
     'payment_month': LLSIFAPI('payment', 'month'),
     'payment_monthly_history': LLSIFAPI('payment', 'history'),
-    'live_friend_list': LLSIFAPI('live', 'partyList'),
-    'live_deck_list': LLSIFAPI('live', 'deckList'),
-    'live_start': LLSIFAPI('live', 'play'),
-    'live_finish': LLSIFAPI('live', 'reward'),
+
+    'background_set': LLSIFAPI('background', 'set'),
+    'background_info': LLSIFAPI('background', 'backgroundInfo'),
+
+    'award_info': LLSIFAPI('award', 'awardInfo'),
+    'award_set': LLSIFAPI('award', 'set'),
+
+    'unaccomplished_achievement': LLSIFAPI('achievement', 'unaccomplishList'),
+
+    'live_friend_list': LLSIFAPI('live', 'partyList', requires=['live_difficulty_id']),
+    'live_deck_list': LLSIFAPI('live', 'deckList', requires=['party_user_id']),
+    'live_start': LLSIFAPI('live', 'play', requires=['party_user_id', 'unit_deck_id', 'live_difficulty_id']),
+    'live_finish': LLSIFAPI('live', 'reward', requires=['good_cnt', 'miss_cnt', 'great_cnt', 'love_cnt', 'max_combo',
+                                                        'score_smile', 'perfect_cnt', 'bad_cnt', 'event_point', 'live_difficulty_id',
+                                                        'score_cute', 'score_cool', 'event_id']),
+    'live_status': LLSIFAPI('live', 'liveStatus'),
+    'live_schedule': LLSIFAPI('live', 'liveSchedule'),
+
+    'friend_list': LLSIFAPI('friend', 'list'),
+    'friend_cancel_request': LLSIFAPI('friend', 'requestCancel'),
+    'friend_req_response': LLSIFAPI('friend', 'response'),
+    'friend_expel': LLSIFAPI('friend', 'expel'),
+
+    'scenario_status': LLSIFAPI('scenario', 'scenarioStatus'),
+    'scenario_reward': LLSIFAPI('scenario', 'reward', requires=['scenario_id']),
+    'scenario_start': LLSIFAPI('scenario', 'startUp', requires=['scenario_id']),
+    'subscenario_status': LLSIFAPI('subscenario', 'subscenarioStatus'),
+    'eventscenario_status': LLSIFAPI('eventscenario', 'status'),
+
+    'is_connected_llaccount': LLSIFAPI('platformAccount', 'isConnectedLlAccount', excludes=['timeStamp', 'commandNum']),
+    'marathon_info': LLSIFAPI('marathon', 'marathonInfo'),
+    'lbonus': LLSIFAPI('lbouns', 'execute'),
+    'personal_notice': LLSIFAPI('personalnotice', 'get'),
+    'battle_info': LLSIFAPI('battle', 'battleInfo'),
+    'banner_list': LLSIFAPI('banner', 'bannerList'),
+    'festival_info': LLSIFAPI('festival', 'festivalInfo'),
+    'navigation_special_cutin': LLSIFAPI('navigation', 'specialCutin'),
+    'all_album': LLSIFAPI('album', 'albumAll'),
+    'online_info': LLSIFAPI('online', 'info'),
+    'challenge_info': LLSIFAPI('challenge', 'challengeInfo'),
+
 }
 
 WEBVIEW_URL_TEMPLATE = '/webview.php/{}/index?0='
